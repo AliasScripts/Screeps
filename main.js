@@ -4,43 +4,38 @@ var roleUpgrader = require('role.upgrader');
 module.exports.loop = function () {
 
     /*
-    //Game.spawns['Spawn1'].createCreep( [WORK, CARRY, MOVE], 'Harvester1' );
+     //Game.spawns['Spawn1'].createCreep( [WORK, CARRY, MOVE], 'Harvester1' );
+     //Create Worker
+     var upgraderCount=0;
+     for(var name in Game.creeps) {
+     var creep = Game.creeps[name];
+     if(creep.memory.role == 'harvester'){
+     upgraderCount++;
+     }
+     //console.log(upgraderCount);
+     }
+     //console.log(upgraderCount);
+     if(upgraderCount<3){
+     if(Game.spawns.Spawn1.canCreateCreep([WORK,CARRY,MOVE],name)==OK){
+     var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE], null, {role: 'harvester'});
+     if(_.isString(result)) {
+     console.log('Harvester name is: '+result);
+     }
+     else {
+     console.log('Harvester error: '+result);
+     }
+     }
+     }
+     */
 
-    //Create Worker
-    var upgraderCount=0;
-
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        if(creep.memory.role == 'harvester'){
-            upgraderCount++;
-        }
-        //console.log(upgraderCount);
-    }
-    //console.log(upgraderCount);
-
-    if(upgraderCount<3){
-        if(Game.spawns.Spawn1.canCreateCreep([WORK,CARRY,MOVE],name)==OK){
-            var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE], null, {role: 'harvester'});
-
-            if(_.isString(result)) {
-                console.log('Harvester name is: '+result);
-            }
-            else {
-                console.log('Harvester error: '+result);
-            }
-
-        }
-
-    }
-
-*/
-
-    //Count Harvesters
+    //Count Creeps
+    //var numberOfharvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
     var harvesters5=0;
 
     //Create Harvester
 
     //Create Upgrader
+
     if(Game.spawns.Spawn1.canCreateCreep([WORK,CARRY,MOVE],name)==OK){
         var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE], null, {role: 'upgrader'});
         console.log(result.toString());
@@ -60,6 +55,7 @@ module.exports.loop = function () {
         }
 
     }
+
 
 
     //Move Units

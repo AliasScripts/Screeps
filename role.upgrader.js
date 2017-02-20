@@ -12,6 +12,9 @@ var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
+        //var pick = Math.floor((Math.random() * 1) + 0);
+        //console.log(pick);
+
         if(creep.memory.working && creep.carry.energy == 0) {
             creep.memory.working = false;
         }
