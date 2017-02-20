@@ -1,62 +1,78 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
+var roleBuilder = require('role.builder');
 
 module.exports.loop = function () {
 
     /*
-     //Game.spawns['Spawn1'].createCreep( [WORK, CARRY, MOVE], 'Harvester1' );
-     //Create Worker
-     var upgraderCount=0;
-     for(var name in Game.creeps) {
-     var creep = Game.creeps[name];
-     if(creep.memory.role == 'harvester'){
-     upgraderCount++;
-     }
-     //console.log(upgraderCount);
-     }
-     //console.log(upgraderCount);
-     if(upgraderCount<3){
-     if(Game.spawns.Spawn1.canCreateCreep([WORK,CARRY,MOVE],name)==OK){
-     var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE], null, {role: 'harvester'});
-     if(_.isString(result)) {
-     console.log('Harvester name is: '+result);
-     }
-     else {
-     console.log('Harvester error: '+result);
-     }
-     }
-     }
+     var result = Game.spawns.Spawn1.createCreep([WORK, WORK, CARRY, MOVE], null, {role: 'harvester',working:false});
+     var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE, MOVE], null, {role: 'upgrader',working:false});
+     var result = Game.spawns.Spawn1.createCreep([WORK, WORK, CARRY, MOVE], null, {role: 'builder',working:false});
+
      */
 
-    //Count Creeps
-    //var numberOfharvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
-    var harvesters5=0;
+    // check for memory entries of died creeps by iterating over Memory.creeps
+    for(var name in Memory.creeps) {
+        // and checking if the creep is still alive
+        if (Game.creeps[name] == undefined) {
+            // if not, delete the memory entry
+            delete Memory.creeps[name];
+        }
+    }
 
-    //Create Harvester
-
-    //Create Upgrader
-
-    if(Game.spawns.Spawn1.canCreateCreep([WORK,CARRY,MOVE],name)==OK){
-        var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, MOVE], null, {role: 'upgrader'});
-        console.log(result.toString());
-
-        for(var name1 in Game.creeps) {
-            var creep1 = Game.creeps[name1];
-            if(name1==result.toString()){
-                creep1.memory.working=false;
-            }
+    //Count Active Units
+    var harvesterCount = 0;
+    var builderCount = 0;
+    var upgraderCount = 0;
+    for(var role in Game.creeps){
+        var creep = Game.creeps[role];
+        if(creep.memory.role == 'harvester'){
+            harvesterCount++;
         }
 
-        if(_.isString(result)) {
-            console.log('Upgrader name is: '+result);
+        if(creep.memory.role == 'upgrader'){
+            upgraderCount++;
         }
-        else {
-            console.log('Upgrader error: '+result);
+
+        if(creep.memory.role == 'builder') {
+            builderCount++;
         }
 
     }
+    console.log('Harvesters: '+harvesterCount);
+    console.log('Upgraders: '+upgraderCount);
+    console.log('Builders: '+builderCount);
+    console.log('-----------------');
 
+    //Spawn Units
+    var maxHarvester = 10;
+    var maxUpgrader = 20;
+    var maxBuilder = 10
 
+    if(harvesterCount<maxHarvester){
+        if(Game.spawns.Spawn1.canCreateCreep([WORK, WORK, CARRY, MOVE],null) == OK ){
+            var result = Game.spawns.Spawn1.createCreep([WORK, WORK, CARRY, MOVE], null, {role: 'harvester',working:false});
+            console.log('Spawning: Harvester');
+            console.log('-----------------');
+        }
+    }else if(upgraderCount<maxUpgrader){
+        if(Game.spawns.Spawn1.canCreateCreep([WORK, CARRY, MOVE, MOVE],null)==OK){
+            var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, CARRY, MOVE], null, {role: 'upgrader',working:false});
+            console.log('Spawning: Upgrader');
+            console.log('-----------------');
+        }
+
+    }else if(builderCount<maxBuilder){
+        if(Game.spawns.Spawn1.canCreateCreep([WORK, CARRY, CARRY, MOVE],null)==OK){
+            var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, CARRY, MOVE], null, {role: 'builder',working:false});
+            console.log('Spawning: Builder');
+            console.log('-----------------');
+        }
+
+    }else{
+        console.log('Spawning: Nothing');
+        console.log('-----------------');
+    }
 
     //Move Units
     for(var name in Game.creeps) {
@@ -64,11 +80,15 @@ module.exports.loop = function () {
         var creep = Game.creeps[name];
 
         if(creep.memory.role == 'harvester'){
-            roleHarvester.run(creep);
+            roleHarvester.run(creep,Spawn);
         }
 
         if(creep.memory.role == 'upgrader'){
             roleUpgrader.run(creep);
+        }
+
+        if(creep.memory.role == 'builder'){
+            roleBuilder.run(creep);
         }
 
     }
