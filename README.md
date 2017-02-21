@@ -3,6 +3,13 @@ This is my personal save file for the game Screeps.
 https://screeps.com/
 
 #Functionality
+
+###Memory Clearing
+Clears leftover memory from dead units.
+
+###Spawning
+Counts living units, spawns needed units.
+
 ###Units
 Harvester - Gathers Minerals, moves them to spawn. 
 
