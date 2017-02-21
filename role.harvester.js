@@ -11,13 +11,8 @@ var roleUpgrader = require('role.upgrader');
 var roleHarvester = {
 
     /** @param {Creep} creep **/
-    run: function(creep,deadUnits) {
+    run: function(creep) {
 
-        /*
-        if(deadUnits){
-            roleUpgrader.run(creep);
-        }
-        */
 	    if(creep.carry.energy < creep.carryCapacity) {
             var sources = creep.room.find(FIND_SOURCES);
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {

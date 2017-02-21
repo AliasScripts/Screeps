@@ -1,6 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var roleRepair = require('role.repair');
 var passiveRoads = require('passive.roads');
 
 module.exports.loop = function () {
@@ -21,34 +22,48 @@ module.exports.loop = function () {
         }
     }
 
-    //Count Active Units
+    //Count Active Units, while moving them
     var harvesterCount = 0;
     var builderCount = 0;
     var upgraderCount = 0;
+    var repairCount = 0;
     for(var role in Game.creeps){
         var creep = Game.creeps[role];
         if(creep.memory.role == 'harvester'){
+            passiveRoads.run(creep);
+            roleHarvester.run(creep);
             harvesterCount++;
         }
 
         if(creep.memory.role == 'upgrader'){
+            passiveRoads.run(creep);
+            roleUpgrader.run(creep);
             upgraderCount++;
         }
 
         if(creep.memory.role == 'builder') {
+            passiveRoads.run(creep);
+            roleBuilder.run(creep);
             builderCount++;
+        }
+        if(creep.memory.role == 'repair') {
+            //passiveRoads.run(creep);
+            roleBuilder.run(creep);
+            repairCount++;
         }
 
     }
     console.log('Harvesters: '+harvesterCount);
     console.log('Upgraders: '+upgraderCount);
     console.log('Builders: '+builderCount);
+    console.log('Repair: '+repairCount);
     console.log('-----------------');
 
     //Spawn Units
     var maxHarvester = 10;
     var maxUpgrader = 10;
-    var maxBuilder = 15;
+    var maxBuilder = 5;
+    var maxRepair = 0;
     var deadUnits = true;
 
     if(harvesterCount<maxHarvester){
@@ -72,12 +87,21 @@ module.exports.loop = function () {
             var deadUnits = false;
         }
 
+    }else if(repairCount<maxRepair){
+        if(Game.spawns.Spawn1.canCreateCreep([WORK, CARRY, CARRY, MOVE],null)==OK){
+            var result = Game.spawns.Spawn1.createCreep([WORK, WORK, CARRY, MOVE], null, {role: 'repair',working:false});
+            console.log('Spawning: Repair');
+            console.log('-----------------');
+            var deadUnits = false;
+        }
+
     }else{
         console.log('Spawning: Nothing');
         console.log('-----------------');
     }
 
     //Move Units
+    /*
     for(var name in Game.creeps) {
 
         var creep = Game.creeps[name];
@@ -96,6 +120,12 @@ module.exports.loop = function () {
             passiveRoads.run(creep);
             roleBuilder.run(creep);
         }
+        if(creep.memory.role == 'repair'){
+            //passiveRoads.run(creep);
+            roleBuilder.run(creep);
+        }
 
     }
+    */
+
 }
