@@ -1,6 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var passiveRoads = require('passive.roads');
 
 module.exports.loop = function () {
 
@@ -46,8 +47,9 @@ module.exports.loop = function () {
 
     //Spawn Units
     var maxHarvester = 10;
-    var maxUpgrader = 20;
-    var maxBuilder = 10
+    var maxUpgrader = 10;
+    var maxBuilder = 15;
+    var deadUnits = true;
 
     if(harvesterCount<maxHarvester){
         if(Game.spawns.Spawn1.canCreateCreep([WORK, WORK, CARRY, MOVE],null) == OK ){
@@ -67,6 +69,7 @@ module.exports.loop = function () {
             var result = Game.spawns.Spawn1.createCreep([WORK, CARRY, CARRY, MOVE], null, {role: 'builder',working:false});
             console.log('Spawning: Builder');
             console.log('-----------------');
+            var deadUnits = false;
         }
 
     }else{
@@ -80,14 +83,17 @@ module.exports.loop = function () {
         var creep = Game.creeps[name];
 
         if(creep.memory.role == 'harvester'){
-            roleHarvester.run(creep,Spawn);
+            passiveRoads.run(creep);
+            roleHarvester.run(creep,deadUnits);
         }
 
         if(creep.memory.role == 'upgrader'){
+            passiveRoads.run(creep);
             roleUpgrader.run(creep);
         }
 
         if(creep.memory.role == 'builder'){
+            passiveRoads.run(creep);
             roleBuilder.run(creep);
         }
 
