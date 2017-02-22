@@ -6,7 +6,7 @@
  * var mod = require('role.builder');
  * mod.thing == 'a thing'; // true
  */
-
+var roleWalls = require('role.walls');
 var roleUpgrader = require('role.upgrader');
 //var roleHarvester = require('role.harvester');
 
@@ -36,7 +36,7 @@ var roleBuilder = {
                 }
             }
             else{
-                roleUpgrader.run(creep);
+                roleWalls.run(creep);
             }
 
         }
