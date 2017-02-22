@@ -17,6 +17,8 @@ Upgrader - Gathers minerals, moves the to room controller
 
 Builder - Gathers minerals, moves them to construction sites. Upgrades if no build projects.
 
+Walls - Upgrades walls
+
 ###Buffs
 Passive Roads - Creeps create road consctuction sites if they walk on non-road.
 
