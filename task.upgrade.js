@@ -1,4 +1,4 @@
-var taskUpgrade = {
+var upgrade = {
 
     run: function(creep) {
 
@@ -20,17 +20,28 @@ var taskUpgrade = {
 
         //If the creep is gathering
         if(creep.memory.gathering==true){
-            //Find energy sources
-            var sources = creep.room.find(FIND_SOURCES);
-            //If a source is in range harvest
-            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                //if not, move closer
-                creep.moveTo(sources[1]);
+            var bucket = creep.room.controller.pos.findInRange(FIND_STRUCTURES, 2, {
+                filter: function (s) {
+                    return s.structureType == STRUCTURE_CONTAINER
+                }
+            })[0];
+
+            if(bucket!=null){
+                if(creep.withdraw(bucket, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(bucket);
+                }
+            }else{
+                var source = creep.pos.findClosestByPath(FIND_SOURCES);
+                //If a source is in range harvest
+                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    //if not, move closer
+                    creep.moveTo(source);
+                }
             }
         }
         //If the creep is not gathering
         else {
-            //If the room controller is in range upgrade it
+            //If the room controller is in range upgrade
             if(creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 //if not, move closer
                 creep.moveTo(creep.room.controller);
@@ -38,6 +49,5 @@ var taskUpgrade = {
         }
 
     }
-
-}
-module.exports = taskUpgrade;
+};
+module.exports = upgrade;

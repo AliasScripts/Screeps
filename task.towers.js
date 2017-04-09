@@ -1,7 +1,8 @@
+var mule = require('task.mule');
 var upgrade = require('task.upgrade');
-var mule = {
+var towers = {
 
-    run: function(creep,sources,roomSpawn,room) {
+    run: function(creep,sources,roomSpawn,room,towers) {
 
         //Check which source to work at
         var target = 0;
@@ -68,33 +69,19 @@ var mule = {
                 creep.moveTo(container);
             }
         }else{
-
-            //find extensions
-            var choice = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            //find towers
+            var choice = room.controller.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (s) {
-                    return s.structureType == STRUCTURE_EXTENSION && s.energy<s.energyCapacity
+                    return s.structureType == STRUCTURE_TOWER && s.energy<s.energyCapacity
                 }
-            })
+            });
+
             if(choice != undefined){
                 if(creep.transfer(choice, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(choice);
                 }
             }else{
-                if(roomSpawn.energy<300){
-                    //If there is no empty extender
-                    var result=creep.transfer(roomSpawn, RESOURCE_ENERGY);
-                    if(result == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(roomSpawn);
-                    }
-                }else{
-
-                    //If everything is full
-                    var result=creep.transfer(overflow, RESOURCE_ENERGY);
-                    if(result == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(overflow);
-                    }
-                }
-
+                mule.run(creep,sources,roomSpawn,room);
             }
         }
 
@@ -102,4 +89,4 @@ var mule = {
 
 }
 
-module.exports = mule;
+module.exports = towers;

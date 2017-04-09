@@ -1,41 +1,32 @@
-var taskMine = {
+var mine = {
 
-    run: function(creep) {
-        //Get sources
-        var sources = creep.room.find(FIND_SOURCES);
-        var sourceCount = sources.length;
-
+    run: function(creep,sources) {
         //Check which source to work at
         var target = 0;
         //For each source
         for(i=0;i < sources.length;i++){
-            //check for a miner unit within range of the source
-            let minerTeam = sources[i].pos.findInRange(FIND_MY_CREEPS, 7, {
-                    filter: s => s.memory.role == 'miner'
+            var minerTeam = sources[i].pos.findInRange(FIND_MY_CREEPS, 2, {
+                filter: function (s) {
+                    return s.memory.role == 'miner'
+                }
             })[0];
             //if there is a miner next to the source, and it's this unit
             if(minerTeam==creep){
                 //target this source
-                var target = i;
-                //store it in memory
-                creep.memory.targetMine = i;
-                //and stop looking
-                break;
-            //If there is no containment unit by the source
+                target = i;
+            //If there is no miner by the source
             }else if(minerTeam==undefined){
                 //target this source
-                var target = i;
-                //save it in memory
-                creep.memory.targetMine = i;
-                //and stop searching
-                break;
+                target = i;
             }
             //If there is a miner next to the source, but it's not this unit, keep looking for a source to target
         }
 
         // find container next to source
-        let container = sources[target].pos.findInRange(FIND_STRUCTURES, 1, {
-                filter: s => s.structureType == STRUCTURE_CONTAINER
+        var container = sources[target].pos.findInRange(FIND_STRUCTURES, 1, {
+            filter: function (s) {
+                return s.structureType == STRUCTURE_CONTAINER
+            }
         })[0];
 
         //If there isn't a container ready yet
@@ -57,4 +48,4 @@ var taskMine = {
 
 }
 
-module.exports = taskMine;
+module.exports = mine;
