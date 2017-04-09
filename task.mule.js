@@ -33,8 +33,8 @@ var taskMule = {
             //If there is a miner next to the source, but it's not this unit, keep looking for a source to target
         }
 
-        // find container next to source
-        let container = sources[target].pos.findInRange(FIND_STRUCTURES, 1, {
+        // find container next to source, change source to target for standard container muling
+        let container = sources[0].pos.findInRange(FIND_STRUCTURES, 1, {
                 filter: s => s.structureType == STRUCTURE_CONTAINER
         })[0];
 
@@ -66,53 +66,29 @@ var taskMule = {
             }
         }else{
 
-            if(Game.spawns['Spawn1'].energy==Game.spawns['Spawn1'].energyCapacity) {
-                //find extensions
-                var extension = creep.room.find(FIND_STRUCTURES, {
-                    filter: function (s) {
-                        return s.structureType == STRUCTURE_EXTENSION
-                    }
-                })
-                //check for empty bins
-                var choice;
-                for(i=0; i < extension.length; i++){
-                    if(extension[i].energy<50){
-                        var choice = extension[i];
-                        break;
-                    }
+            //find extensions
+            var choice = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: function (s) {
+                    return s.structureType == STRUCTURE_EXTENSION && s.energy<s.energyCapacity
                 }
-                if(choice != undefined){
-                    if(creep.transfer(choice, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(choice);
-                    }
-                }else{
-                    //If everything is full
-                    //Give energy to Neo
-
-                    //Check if there is a container next to controller
-                    let container = creep.room.controller.pos.findInRange(FIND_STRUCTURES, 1, {
-                            filter: s => s.structureType == STRUCTURE_CONTAINER
-                })[0];
-
-                    if(container!=undefined){
-                        //If there IS a container
-                        //If the unit is not 1 block adjacent to it
-                        if(creep.pos.getRangeTo(container)!=1){
-                            creep.moveTo(container);
-                        }else{
-                            creep.transfer(container,RESOURCE_ENERGY);
-                        }
-                    }
-                    //If the room controller is in range upgrade it
-                    else if(creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        //if not, move closer
-                        creep.moveTo(creep.room.controller);
-                    }
+            })
+            //check for empty bins
+            /*
+            var choice;
+            for(i=0; i < extension.length; i++){
+                if(extension[i].energy<50){
+                    var choice = extension[i];
+                    break;
                 }
-
-
             }
-            else{
+            */
+            //If there is a bucket
+            if(choice != undefined){
+                if(creep.transfer(choice, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(choice);
+                }
+            }else{
+                //If there is no empty extender
                 if(creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.spawns['Spawn1']);
                 }

@@ -6,6 +6,11 @@ var taskMule = require('task.mule');
 var taskBuild = require('task.extend');
 var taskUplink = require('task.uplink');
 var taskNeo = require('task.neo');
+var taskMorpheus = require('task.morpheus');
+var towerMule = require('task.towerMule');
+var towerFeeder = require('task.towerFeeder');
+var rangeMining = require('task.rangeMining');
+var claim = require('task.claim');
 var buffSwiftBoots = require('buff.swiftBoots');
 
 var moveCitizens = {
@@ -31,11 +36,7 @@ var moveCitizens = {
             var creep = Game.creeps[role];
 
             //Buff the unit
-            if(creep.memory.role!='builder'){
-                if(creep.memory.role!='uplink'){
-                    buffSwiftBoots.run(creep); // Puts in road orders where it steps
-                }
-            }
+            buffSwiftBoots.run(creep); // Puts in road orders where it steps
 
             //if it's a peon,
             if(creep.memory.role == 'peon'){
@@ -47,17 +48,17 @@ var moveCitizens = {
                         creep.memory.task = 'containment';
                         containment++;
                     }
-                    //if there are no harvesters
-                    else if(harvesters<1){
-                        //turn the peon into a harvester
-                        creep.memory.task = 'harvest';
-                        harvesters++;
-                    }
                     //else if there are no upgraders
                     else if(upgraders<1){
                         //turn the peon into an upgrader
                         creep.memory.task = 'upgrade';
                         upgraders++;
+                    }
+                    //if there are no harvesters
+                    else if(harvesters<1){
+                        //turn the peon into a harvester
+                        creep.memory.task = 'harvest';
+                        harvesters++;
                     }
                     else{
                         //if remaining idle, wait by controller
@@ -117,6 +118,10 @@ var moveCitizens = {
                 creep.memory.task = 'working';
                 taskMule.run(creep);
             }
+            //if it's a Tower Mule
+            else if(creep.memory.role == 'towerMule'){
+                towerMule.run(creep);
+            }
             //if it's a builder
             else if(creep.memory.role == 'builder'){
                 creep.memory.task = 'working';
@@ -130,6 +135,20 @@ var moveCitizens = {
             //if it's NEO
             else if(creep.memory.role=='neo'){
                 taskNeo.run(creep);
+            }
+            //if it's Morpheus
+            else if(creep.memory.role == 'morpheus'){
+                taskMorpheus.run(creep);
+            }
+            else if(creep.memory.role == 'feeder'){
+                towerFeeder.run(creep);
+            }
+
+            else if(creep.memory.role == 'rangeMiner'){
+                rangeMining.run(creep);
+            }
+            else if(creep.memory.role == 'claim'){
+                claim.run(creep);
             }
         }
 

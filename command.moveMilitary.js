@@ -1,12 +1,33 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('command.moveMilitary');
- * mod.thing == 'a thing'; // true
- */
+var troopPredator = require('troop.predator');
+var troopArcher = require('troop.archer');
+var antiTower = require('troop.antiTower');
+var troopMedic = require('troop.medic');
 
-module.exports = {
+var moveMilitary = {
+
+
+
+    run: function() {
+
+        for(var role in Game.creeps) {
+            var creep = Game.creeps[role];
+
+            if(creep.memory.role == 'medic'){
+                troopMedic.run(creep);
+            }
+            else if(creep.memory.role == 'Defender'){
+                troopPredator.run(creep);
+            }
+            else if(creep.memory.role == 'anti'){
+                antiTower.run(creep);
+            }
+            else if(creep.memory.role == 'archer'){
+                troopArcher.run(creep);
+            }
+
+        }
+    }
 
 };
+
+module.exports = moveMilitary;

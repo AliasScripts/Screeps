@@ -19,19 +19,30 @@ var taskBuild = {
         }
 
         if(creep.memory.gathering==true){
-            //Don't pull energy if a unit needs to spawn
-            if(Memory.queue==0){
+
+
+            if(Memory.queue<=0){
                 if(creep.withdraw(Game.spawns['Spawn1'], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(Game.spawns['Spawn1']);
                 }
             }else{
-                creep.moveTo(creep.room.controller);
+                creep.moveTo(Game.spawns['Spawn1']);
             }
+
+
+
+            /*
+            var sources = creep.room.find(FIND_SOURCES);
+            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[1]);
+             }
+             */
+
         }
         else {
             var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
             var workSites = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES,{
-                    filter: s => s.structureType == STRUCTURE_CONTAINER
+                    filter: s => s.structureType == STRUCTURE_RAMPART
             });
 
             if(workSites!=undefined){
@@ -43,7 +54,7 @@ var taskBuild = {
                 if(result == ERR_NOT_IN_RANGE){
                     creep.moveTo(constructionSite);
                 }else if(result == ERR_INVALID_TARGET){
-                    creep.moveTo(creep.room.controller);
+                    creep.moveTo(24,15);
                 }
             }else{
 

@@ -23,9 +23,9 @@ var taskUpgrade = {
             //Find energy sources
             var sources = creep.room.find(FIND_SOURCES);
             //If a source is in range harvest
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
                 //if not, move closer
-                creep.moveTo(sources[0]);
+                creep.moveTo(sources[1]);
             }
         }
         //If the creep is not gathering

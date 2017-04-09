@@ -10,7 +10,7 @@ var taskMine = {
         //For each source
         for(i=0;i < sources.length;i++){
             //check for a miner unit within range of the source
-            let minerTeam = sources[i].pos.findInRange(FIND_MY_CREEPS, 1, {
+            let minerTeam = sources[i].pos.findInRange(FIND_MY_CREEPS, 7, {
                     filter: s => s.memory.role == 'miner'
             })[0];
             //if there is a miner next to the source, and it's this unit

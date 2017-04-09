@@ -74,6 +74,8 @@ var taskUplink = {
                     creep.withdraw(container,RESOURCE_ENERGY);
                 }else if(container.hits<container.hitsMax){
                     creep.repair(container);
+                }else{
+                    creep.upgradeController(creep.room.controller, RESOURCE_ENERGY);
                 }
             }
         }
