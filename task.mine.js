@@ -5,18 +5,14 @@ var mine = {
         var target = 0;
         //For each source
         for(i=0;i < sources.length;i++){
-            var minerTeam = sources[i].pos.findInRange(FIND_MY_CREEPS, 2, {
+            //find the closest miner to the source
+            var minerTeam = sources[i].pos.findInRange(FIND_MY_CREEPS, 50, {
                 filter: function (s) {
                     return s.memory.role == 'miner'
                 }
             })[0];
-            //if there is a miner next to the source, and it's this unit
+            //tell the closest miner to target this source
             if(minerTeam==creep){
-                //target this source
-                target = i;
-            //If there is no miner by the source
-            }else if(minerTeam==undefined){
-                //target this source
                 target = i;
             }
             //If there is a miner next to the source, but it's not this unit, keep looking for a source to target

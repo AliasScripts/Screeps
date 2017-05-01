@@ -30,6 +30,12 @@ var upgrade = {
                 if(creep.withdraw(bucket, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(bucket);
                 }
+                //If the room controller is in range upgrade
+                if(creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    //if not, move closer
+                    creep.moveTo(creep.room.controller);
+                }
+
             }else{
                 var source = creep.pos.findClosestByPath(FIND_SOURCES);
                 //If a source is in range harvest

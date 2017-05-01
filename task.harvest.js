@@ -34,7 +34,7 @@ var harvest = {
                 }
             }
         }else{
-            if(creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)!=null){
+            if(creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES)!=null){
                 build.run(creep);
             }else{
                 upgrade.run(creep);

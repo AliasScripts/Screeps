@@ -5,7 +5,7 @@ var mine = require('task.mine');
 var mule = require('task.mule');
 var autoConstruct = require('autoConstruct');
 
-var level3={
+var level4={
 
     run: function(room,roomSpawn,roomEnergy,roomLevel,extensions,roomEnergyMax,sources){
         //Count and move units
@@ -37,11 +37,7 @@ var level3={
                 claim++;
             }
             else if(creep.memory.role == 'peon'){
-                if(peons>0){
-                    creep.suicide();
-                }else{
-                    peons++;
-                }
+                peons++;
             }
 
         }
@@ -64,11 +60,7 @@ var level3={
                 upgrade.run(creep,roomLevel,sources);
             }
             else if(creep.memory.role == 'peon'){
-                if(miners>0 && mules>0){
-                    creep.suicide();
-                }else{
-                    harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax);
-                }
+                harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax);
             }
 
         }
@@ -79,7 +71,8 @@ var level3={
             //Mule for each miner (upgrades if max energy)
             //Builder
         if(miners==0){
-            if(peons<1){
+            
+            if(peons<2){
                 if(roomEnergy<550){
                     if(roomEnergy>=300){
                         roomSpawn.createCreep([MOVE,MOVE,WORK,CARRY],'FailSafe_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'peon',task:'harvest'});
@@ -87,10 +80,13 @@ var level3={
                 }
             }
         }else if(mules==0){
+            
             if(roomEnergy >= 300){
                 roomSpawn.createCreep([MOVE,MOVE,MOVE,CARRY,CARRY,CARRY],'Mule_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'mule',task:'Mule things.'});
             }
+            
         }
+
         if(extensions.length>=20){
             if(miners<sources.length){
                 if(roomEnergy >= 550){
@@ -122,4 +118,4 @@ var level3={
 
 }
 
-module.exports = level3;
+module.exports = level4;

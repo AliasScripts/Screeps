@@ -1,6 +1,15 @@
 var unitTower = {
     run: function(room) {
 
+        var farmMode = false;
+        for(i in Game.flags){
+            if(Game.flags[i].room==room){
+                if(Game.flags[i].pos.x==0 && Game.flags[i].pos.y==0){
+                    farmMode=true;
+                }
+            }
+        }
+
         var towers = room.controller.pos.findInRange(FIND_MY_STRUCTURES,50, {
             filter: { structureType: STRUCTURE_TOWER }
         });
@@ -43,6 +52,7 @@ var unitTower = {
                     return s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART
                 }
             });
+
             if(towers.length==1){
                 if(closestHostile!= null){
                     tower.attack(closestHostile);
@@ -54,42 +64,21 @@ var unitTower = {
                     tower.repair(roads);
                 }else if (walls != null){
                     var target = undefined;
-                    // loop with increasing percentages
-                    for (let percentage = 0.0001; percentage <= 1; percentage = percentage + 0.0001){
-                        // find a wall with less than percentage hits
-                        for (let wall of walls) {
-                            if(wall.structureType=='rampart'){
-                                if (wall.hits < 5000) {
-                                    target = wall;
-                                    //console.log(wall.hits);
-                                    break;
-                                }else if (wall.hits <=Memory.wallHP) {
-                                    target = wall;
-                                    //console.log(wall.hits);
-                                    //break;
-                                }
-                            }else{
-                                if (wall.hits < 5000) {
-                                    target = wall;
-                                    //console.log(wall.hits);
-                                    break;
-                                    Memory.wallHP=target.hits;
-                                }else if (wall.hits / wall.hitsMax < percentage) {
-                                    target = wall;
-                                    Memory.wallHP=target.hits;
-                                    //console.log(wall.hits);
-                                    //break;
-                                }
-                            }
-                        }
-                        // if there is one
-                        if (target != undefined) {
-                            // break the loop
-                            //console.log(target.hits);
-                            break;
+                    var target = undefined;
+                    var  targetHP = 999999999;
+                    for(i in walls){
+                        if(walls[i].hits<targetHP){
+                            targetHP = walls[i].hits;
+                            target=walls[i];
                         }
                     }
-                    tower.repair(target);
+                    if(farmMode){
+                        if(target.structureType==STRUCTURE_RAMPART){
+                            tower.repair(target);
+                        }
+                    }else{
+                        tower.repair(target);
+                    }
                 }
             }else if(i<towers.length-1){
                 if (weak != null){
@@ -108,42 +97,20 @@ var unitTower = {
                     tower.repair(roads);
                 }else if (walls != null){
                     var target = undefined;
-                    // loop with increasing percentages
-                    for (let percentage = 0.0001; percentage <= 1; percentage = percentage + 0.0001){
-                        // find a wall with less than percentage hits
-                        for (let wall of walls) {
-                            if(wall.structureType=='rampart'){
-                                if (wall.hits < 5000) {
-                                    target = wall;
-                                    //console.log(wall.hits);
-                                    break;
-                                }else if (wall.hits <=Memory.wallHP) {
-                                    target = wall;
-                                    //console.log(wall.hits);
-                                    //break;
-                                }
-                            }else{
-                                if (wall.hits < 5000) {
-                                    target = wall;
-                                    //console.log(wall.hits);
-                                    break;
-                                    Memory.wallHP=target.hits;
-                                }else if (wall.hits / wall.hitsMax < percentage) {
-                                    target = wall;
-                                    Memory.wallHP=target.hits;
-                                    //console.log(wall.hits);
-                                    //break;
-                                }
-                            }
-                        }
-                        // if there is one
-                        if (target != undefined) {
-                            // break the loop
-                            //console.log(target.hits);
-                            break;
+                    var  targetHP = 999999999;
+                    for(i in walls){
+                        if(walls[i].hits<targetHP){
+                            targetHP = walls[i].hits;
+                            target=walls[i];
                         }
                     }
-                    tower.repair(target);
+                    if(farmMode){
+                        if(target.structureType==STRUCTURE_RAMPART){
+                            tower.repair(target);
+                        }
+                    }else{
+                        tower.repair(target);
+                    }
                 }
             }
 

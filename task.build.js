@@ -37,9 +37,19 @@ var build = {
                         return s.structureType == STRUCTURE_CONTAINER
                     }
                 })[0];
-
-                if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                
+                if(container!=null){
+                    if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(container);
+                }
+                }else{
+                                    //Find energy sources
+                var source = creep.pos.findClosestByPath(FIND_SOURCES);
+                //If a source is in range harvest
+                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    //if not, move closer
+                    creep.moveTo(source);
+                }
                 }
             }else{
                 //Find energy sources

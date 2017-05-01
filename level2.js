@@ -12,6 +12,7 @@ var level2={
         var harvesters = 0;
         var upgraders = 0;
         var builders = 0;
+        var idles = 0;
 
         for(var i in room.find(FIND_MY_CREEPS)) {
             var creeps = room.find(FIND_MY_CREEPS);
@@ -22,7 +23,7 @@ var level2={
             }
 
             if(creep.memory.task == 'idle'){
-
+                idles++;
             }else if(creep.memory.task == 'harvest'){
                 harvesters++;
             }else if(creep.memory.task == 'upgrade'){
@@ -32,6 +33,7 @@ var level2={
             }
         }
 
+console.log('before-'+'peons: '+peons+' haversters: '+harvesters+' upgraders: '+upgraders+' builders: '+builders+' idles: '+idles);
         for(var i in room.find(FIND_MY_CREEPS)) {
 
             var creeps = room.find(FIND_MY_CREEPS);
@@ -40,37 +42,50 @@ var level2={
             if(creep.memory.task == 'idle'){
                 if(harvesters<2){
                     creep.memory.task='harvest';
+                    harvesters++;
                 }
                 else if(upgraders<2){
                     creep.memory.task='upgrade';
+                    upgraders++;
                 }
-                else if(builders<2){
-                    creep.memory.task='build';
-                }else{
+                else if(upgraders<2){
                     creep.memory.task='upgrade';
+                    upgraders++;
+                }else{
+                    creep.memory.task='build';
+                    builders++;
                 }
             }else if(creep.memory.task == 'harvest'){
                 harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax);
                 if(harvesters>2){
                     creep.memory.task="idle";
+                    idles++;
+                    harvesters--;
                 }
             }else if(creep.memory.task == 'upgrade'){
                 upgrade.run(creep,roomLevel,roomSpawn);
                 if(upgraders>2){
                     creep.memory.task="idle";
+                    idles++;
+                    upgraders--;
+
                 }else if(harvesters<2){
                     creep.memory.task="idle";
+                    idles++;
+                    upgraders--;
                 }
             }else if(creep.memory.task == 'build'){
                 build.run(creep);
-                if(builders>2){
+                if(upgraders<2){
                     creep.memory.task="idle";
-                }else if(upgraders<2){
-                    creep.memory.task="idle";
+                    idles++
+                    builders--;
                 }
             }
 
         }
+        console.log('after-'+'peons: '+peons+' haversters: '+harvesters+' upgraders: '+upgraders+' builders: '+builders+' idles: '+idles);
+        console.log('------------');
 
         //Spawn needed units
         if(peons<10){

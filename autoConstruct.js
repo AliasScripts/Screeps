@@ -2,6 +2,8 @@
 var autoConstruct={
     run: function(room,roomSpawn,roomLevel,extensions){
 
+
+
         //Create a new spawn
         if(Game.flags.claim != null){
             var newSpawn = Game.flags.claim.pos;
@@ -17,7 +19,9 @@ var autoConstruct={
         }
 
         //Create containers by sources
+
         for(var i in room.find(FIND_SOURCES)) {
+
 
             var sources = room.find(FIND_SOURCES);
 
@@ -57,7 +61,7 @@ var autoConstruct={
                     if ((-width/2 < x && x <= width/2)  && (-height/2 < y && y <= height/2)) {
                         var currentX = sources[i].pos.x+x;
                         var currentY = sources[i].pos.y+y;
-                        if(currentX > 3 && currentX < 47 && currentY > 3 && currentY < 47){
+                        if(currentX > 1 && currentX < 48 && currentY > 1 && currentY < 48){
                             if(sources[i].pos.getRangeTo(currentX,currentY)==1){
                                 if(room.lookForAt(LOOK_CONSTRUCTION_SITES, currentX, currentY).length==0) {
                                     if (room.lookForAt(LOOK_STRUCTURES, currentX, currentY).length == 0) {
