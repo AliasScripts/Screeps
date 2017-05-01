@@ -33,7 +33,6 @@ var level2={
             }
         }
 
-console.log('before-'+'peons: '+peons+' haversters: '+harvesters+' upgraders: '+upgraders+' builders: '+builders+' idles: '+idles);
         for(var i in room.find(FIND_MY_CREEPS)) {
 
             var creeps = room.find(FIND_MY_CREEPS);
@@ -84,8 +83,6 @@ console.log('before-'+'peons: '+peons+' haversters: '+harvesters+' upgraders: '+
             }
 
         }
-        console.log('after-'+'peons: '+peons+' haversters: '+harvesters+' upgraders: '+upgraders+' builders: '+builders+' idles: '+idles);
-        console.log('------------');
 
         //Spawn needed units
         if(peons<10){
