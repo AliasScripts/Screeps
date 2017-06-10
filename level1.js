@@ -1,8 +1,9 @@
 var harvest = require('task.harvest');
+var build = require('task.build');
 
 var level1={
 
-    run: function(room,roomSpawn,roomEnergy,roomLevel,extensions,roomEnergyMax){
+    run: function(room,roomSpawn,roomEnergy,roomLevel,extensions,roomEnergyMax,sources){
 
         //Count and move units
         var peonsAlive = 0;
@@ -13,10 +14,11 @@ var level1={
 
             if(creep.memory.role == 'peon'){
                 peonsAlive++;
-                harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax);
+                harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax,sources, roomLevel, room);
             }
             if(creep.memory.role == 'expand'){
-                creep.suicide();
+                //creep.suicide();
+                build.run(creep,roomLevel,roomSpawn,sources,room);
             }
         }
 

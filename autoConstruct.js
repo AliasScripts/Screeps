@@ -137,7 +137,7 @@ var autoConstruct={
             var counter = 0;
 
             var needContainer = true;
-            while(needContainer){
+            while(needContainer && roomSpawn){
                 if ((-width/2 < x && x <= width/2)  && (-height/2 < y && y <= height/2)) {
                     var currentX = room.controller.pos.x+x;
                     var currentY = room.controller.pos.y+y;

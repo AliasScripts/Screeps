@@ -3,7 +3,7 @@ var build = require('task.build');
 
 var harvest = {
 
-    run: function(creep,roomSpawn,roomEnergy,roomEnergyMax) {
+    run: function(creep,roomSpawn,roomEnergy,roomEnergyMax,sources,roomLevel,room) {
 
         if(roomEnergy<roomEnergyMax){
 
@@ -35,7 +35,7 @@ var harvest = {
             }
         }else{
             if(creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES)!=null){
-                build.run(creep);
+                build.run(creep,roomLevel,roomSpawn,sources,room);
             }else{
                 upgrade.run(creep);
             }

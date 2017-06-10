@@ -1,7 +1,9 @@
+var taskGather = require('task.gather');
 var towers = require('task.towers');
 var build = {
 
     run: function(creep,roomLevel,roomSpawn,sources,room) {
+
 
         var constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
@@ -30,43 +32,15 @@ var build = {
 
         //If the creep is gathering
         if(creep.memory.gathering==true){
-            if(roomLevel>=3){
+            taskGather.run(creep,sources);
 
-                var container = sources[1].pos.findInRange(FIND_STRUCTURES, 1, {
-                    filter: function (s) {
-                        return s.structureType == STRUCTURE_CONTAINER
-                    }
-                })[0];
-                
-                if(container!=null){
-                    if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(container);
-                }
-                }else{
-                                    //Find energy sources
-                var source = creep.pos.findClosestByPath(FIND_SOURCES);
-                //If a source is in range harvest
-                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    //if not, move closer
-                    creep.moveTo(source);
-                }
-                }
-            }else{
-                //Find energy sources
-                var source = creep.pos.findClosestByPath(FIND_SOURCES);
-                //If a source is in range harvest
-                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    //if not, move closer
-                    creep.moveTo(source);
-                }
-            }
-        }else if(weakContainer != null){
+        }else if(weakContainer){
             var result = creep.repair(weakContainer);
             if(result == ERR_NOT_IN_RANGE){
                 creep.moveTo(weakContainer);
 
             }
-        }else if (constructionSite != undefined) {
+        }else if (constructionSite) {
                 var result = creep.build(constructionSite);
                 if(result == ERR_NOT_IN_RANGE){
                     creep.moveTo(constructionSite);
@@ -75,6 +49,7 @@ var build = {
                 }
         }else{
             towers.run(creep,sources,roomSpawn,room);
+
         }
     }
 };

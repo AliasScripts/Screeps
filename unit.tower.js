@@ -73,8 +73,10 @@ var unitTower = {
                         }
                     }
                     if(farmMode){
-                        if(target.structureType==STRUCTURE_RAMPART){
-                            tower.repair(target);
+                        if(target!=null){
+                            if(target.structureType==STRUCTURE_RAMPART){
+                                tower.repair(target);
+                            }
                         }
                     }else{
                         tower.repair(target);
@@ -105,8 +107,10 @@ var unitTower = {
                         }
                     }
                     if(farmMode){
-                        if(target.structureType==STRUCTURE_RAMPART){
-                            tower.repair(target);
+                        if(target!=null){
+                            if(target.structureType==STRUCTURE_RAMPART){
+                                tower.repair(target);
+                            }
                         }
                     }else{
                         tower.repair(target);

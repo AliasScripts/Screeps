@@ -19,9 +19,13 @@ var level3={
         for(var i in room.find(FIND_MY_CREEPS)) {
             var creeps = room.find(FIND_MY_CREEPS);
             var creep = creeps[i];
+            var terrain = creep.room.lookForAt('terrain', creep.pos.x, creep.pos.y);
 
             if(creep.memory.role == 'builder'){
                 builders++;
+                if(terrain == 'road'){
+                    creep.repair(creep.pos.x,creep.pos.y);
+                }
             }
             else if(creep.memory.role == 'miner'){
                 miners++;
@@ -33,11 +37,11 @@ var level3={
                 upgraders++;
             }
             else if(creep.memory.role == 'peon'){
-                if(peons>0){
-                    creep.suicide();
-                }else{
-                    peons++;
-                }
+                peons++;
+            }
+
+            if(terrain == 'swamp'){
+                //creep.room.createConstructionSite(creep.pos,STRUCTURE_ROAD);
             }
 
         }
@@ -63,7 +67,7 @@ var level3={
                 if(miners>0 && mules>0){
                     creep.suicide();
                 }else{
-                    harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax);
+                    harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax,sources,roomLevel,room);
                 }
             }
 
@@ -116,8 +120,8 @@ var level3={
                 }
             }
             else if(upgraders<5){
-                if(roomEnergy >= 300){
-                    roomSpawn.createCreep([MOVE,MOVE,WORK,CARRY],'Upgrader_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'upgrade',task:'upgrading'});
+                if(roomEnergy >= 550){
+                    roomSpawn.createCreep([MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],'Upgrader_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'upgrade',task:'upgrading'});
                 }
             }
             else if(builders<3){

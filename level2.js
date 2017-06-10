@@ -5,7 +5,7 @@ var autoConstruct = require('autoConstruct');
 
 var level2={
 
-    run: function(room,roomSpawn,roomEnergy,roomLevel,extensions,roomEnergyMax){
+    run: function(room,roomSpawn,roomEnergy,roomLevel,extensions,roomEnergyMax,sources){
 
         //Count and move units
         var peons = 0;
@@ -55,7 +55,7 @@ var level2={
                     builders++;
                 }
             }else if(creep.memory.task == 'harvest'){
-                harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax);
+                harvest.run(creep,roomSpawn,roomEnergy,roomEnergyMax,sources,roomLevel,room);
                 if(harvesters>2){
                     creep.memory.task="idle";
                     idles++;
@@ -74,7 +74,7 @@ var level2={
                     upgraders--;
                 }
             }else if(creep.memory.task == 'build'){
-                build.run(creep);
+                build.run(creep,roomLevel,roomSpawn,sources,room);
                 if(upgraders<2){
                     creep.memory.task="idle";
                     idles++

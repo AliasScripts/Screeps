@@ -40,6 +40,11 @@ var level4={
                 peons++;
             }
 
+            var terrain = creep.room.lookForAt('terrain', creep.pos.x, creep.pos.y);
+            if(terrain == 'swamp'){
+                //creep.room.createConstructionSite(creep.pos,STRUCTURE_ROAD);
+            }
+
         }
 
         for(var i in room.find(FIND_MY_CREEPS)) {
@@ -77,6 +82,8 @@ var level4={
                     if(roomEnergy>=300){
                         roomSpawn.createCreep([MOVE,MOVE,WORK,CARRY],'FailSafe_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'peon',task:'harvest'});
                     }
+                }else{
+                    roomSpawn.createCreep([MOVE,WORK,WORK,WORK,WORK,WORK],'Miner_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'miner',task:'idle'});
                 }
             }
         }else if(mules==0){
@@ -94,8 +101,8 @@ var level4={
                 }
             }
             else if(mules<sources.length*2){
-                if(roomEnergy >= 300){
-                    roomSpawn.createCreep([MOVE,MOVE,MOVE,CARRY,CARRY,CARRY],'Mule_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'mule',task:'Mule things.'});
+                if(roomEnergy >= 1000){
+                    roomSpawn.createCreep([MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],'Mule_'+ (Math.floor(Math.random() * 65534) + 1), {role: 'mule',task:'Mule things.'});
                 }
             }
             else if(upgraders<3){
